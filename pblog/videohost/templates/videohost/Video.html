@@ -1,0 +1,96 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Play video</title>
+    <link rel="stylesheet" href="{% static 'videohost/css/style.css' %}" type="text/css">
+</head>
+<body>
+    
+    <nav class="flex-div">
+        <div class="nav-left flex-div">
+<!--            <img src="{% static 'videohost/images/menu.png' %}" class="menu-icon">-->
+            <a href="{% url 'home' %}"><img src="{% static 'videohost/images/logo.png' %}" class="logo"></a>
+        </div>
+        <div class="nav-middle flex-div">
+            <div class="search-box flex-div">
+                <input type="text" placeholder="Поиск">
+                <img src="{% static 'videohost/images/search.png' %}">
+            </div>
+        </div>
+        <div class="nav-right flex-div">
+            <a href="{% url 'enter' %}" class="auth">Войти</a>
+<!--            <img src="{% static 'videohost/images/upload.png' %}">-->
+<!--            <img src="{% static 'videohost/images/Jack.png' %}" class="user-icon">-->
+        </div>
+    </nav>
+
+    <div class="container play-container">
+        <div class="row">
+            <div class="play-video">
+                <video controls>
+                    <source src="{% static 'videohost/images/video.mp4' %}" type="video/mp4">
+                </video>
+                <h3>Best PBlog Channel to learn</h3>
+                <div class="play-video-info">
+                    <p>1225 Просмотров &bull; 2 дня назад</p>
+                    <div>
+                        <a href=""><img src="{% static 'videohost/images/like.png' %}" alt="">125</a>
+                        <a href=""><img src="{% static 'videohost/images/dislike.png' %}" alt="">3</a>
+                    </div>
+                </div>
+                <hr>
+                <div class="publisher">
+                    <img src="{% static 'videohost/images/Jack.png' %}">
+                    <div>
+                        <p>Easy Tutorials</p>
+                        <span>500k Подписчиков</span>
+                    </div>
+                    <button type="button">Подписаться</button>
+                </div>
+                <div class="vid-descrtiption">
+                    <p>Channel that makes learning easy</p>
+                    <p>Subscribe Easy Tutorials to watch more tutorials</p>
+                    <hr>
+                    <h4>134 комментария</h4>
+                    <div class="add-comment">
+                        <img src="{% static 'videohost/images/Jack.png' %}">
+                        <input type="text" placeholder="Введите комментарий">
+                    </div>
+                    <div class="old-comment">
+                        <img src="{% static 'videohost/images/Jack.png' %}">
+                        <div>
+                            <h3>Jack Nicholson <span>2 дня назад</span></h3>
+                            <p>AHAHAHAHAHAHAHHAHAHAHAHAHAHAHAHAHHAHA</p>
+                            <div class="acomment-action">
+                                <img src="{% static 'videohost/images/like.png' %}">
+                                <span>244</span>
+                                <img src="{% static 'videohost/images/dislike.png' %}">
+                                <span>12</span>
+                                <span>Ответить</span>
+                                <a href="">Все ответы</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="right-sidebar">
+                <div class="side-video-list">
+                    <a href="" class="small-thumbnail"><img src="{% static 'videohost/images/thumbnail1.png' %}"></a>
+                    <div class="vid-info">
+                        <a href="">Best channel</a>
+                        <p>Easy tutorials</p>
+                        <p>15k Просмотров</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+</html>

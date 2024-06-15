@@ -1,0 +1,91 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'videohost/css/style.css' %}">
+    <script src="{% static 'videohost/js/script.js' %}" defer></script>
+    <title>PBlog</title>
+</head>
+
+<body>
+
+    <nav class="flex-div">
+        <div class="nav-left flex-div">
+            <img src="{% static 'videohost/images/menu.png' %}" class="menu-icon">
+            <a href="{% url 'home' %}"><img src="{% static 'videohost/images/logo.png' %}" class="logo"></a>
+        </div>
+        <div class="nav-middle flex-div">
+            <div class="search-box flex-div">
+                <input type="text" placeholder="Поиск">
+                <img src="{% static 'videohost/images/search.png' %}">
+            </div>
+        </div>
+        <div class="nav-right flex-div">
+            <img src="{% static 'videohost/images/upload.png' %}" class="upload" id="upload">
+            <span class="username" id="username"></span>
+            <button class="logout" id="logout">Выйти</button>
+            <a href="enter.html/" class="auth">Войти</a>
+        </div>
+    </nav>
+    <!-- sidebar -->
+
+    <div class="sidebar">
+        <div class="shortcut-links">
+            <a href=""><img src="{% static 'videohost/images/home_active.png' %}">
+                <p>Главная</p>
+            </a>
+            <a href="{% url 'channel' %}"><img src="{% static 'videohost/images/subscriprion.png' %}">
+                <p>Мой канал</p>
+            </a>
+            <a href=""><img src="{% static 'videohost/images/library.png' %}">
+                <p>Библиотека</p>
+            </a>
+            <hr>
+        </div>
+        <div class="subscribe-list">
+        <h3>Подписки</h3>
+<!--        <a href=""><img src="{% static 'videohost/images/Jack.png' %}">-->
+<!--            <p>Jack Nicholson</p>-->
+<!--        </a>-->
+        </div>
+    </div>
+
+<!-- main -->
+
+<div class="container">
+    <div class="list-container">
+        <div class="vid-list">
+            <a href="Video.html/"><img src="{% static 'videohost/images/thumbnail1.png' %}" class="thumbnail"></a>
+            <div class="flex-div">
+                <img src="{% static 'videohost/images/Jack.png' %}">
+                <div class="vid-info">
+                    <a href="Video.html/">Best channel to learn</a>
+                    <p>Easy Tutorials</p>
+                    <p>15k Просмотров &bull; 2 дня назад</p>
+                </div>
+            </div>
+        </div>
+        <div class="vid-list">
+            <a href="{% url 'video' %}"><img src="{% static 'videohost/images/thumbnail1.png' %}" class="thumbnail"></a>
+            <div class="flex-div">
+                <img src="{% static 'videohost/images/Jack.png' %}">
+                <div class="vid-info">
+                    <a href="Video.html/">Best channel to learn</a>
+                    <p>Easy Tutorials</p>
+                    <p>15k Просмотров &bull; 2 дня назад</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="module" src="{% static 'videohost/js/main_script.js' %}"></script>
+<script type="module" src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js"></script>
+<script type="module" src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js"></script>
+<script type="module" src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js"></script>
+</body>
+
+</html>

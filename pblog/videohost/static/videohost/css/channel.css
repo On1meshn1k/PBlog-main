@@ -1,0 +1,7 @@
+.shortcut-links a:first-child {
+    color: #5a5a5a;
+}
+
+.shortcut-links .my_channel {
+    color: rgb(43, 188, 255);
+}
