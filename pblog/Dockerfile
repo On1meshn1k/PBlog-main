@@ -11,4 +11,8 @@ COPY . .
 
 EXPOSE 8000
 
+CMD ["./djvenv/Scripts/activate"]
+
+CMD ["cd", "pblog"]
+
 CMD ["python", "manage.py", "runserver"]
