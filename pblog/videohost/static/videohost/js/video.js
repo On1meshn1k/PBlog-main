@@ -24,6 +24,10 @@ const db = getDatabase(app);
 const storage = getStorage(app);
 
 const user = auth.currentUser;
+const username = document.getElementById('username');
+const upload = document.getElementById('upload');
+const logout = document.getElementById('logout');
+const enter = document.querySelector('.auth');
 
 auth.onAuthStateChanged(function(user) {
   if(user) {
