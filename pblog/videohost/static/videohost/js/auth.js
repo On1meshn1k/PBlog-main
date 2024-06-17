@@ -35,7 +35,7 @@ submit.addEventListener("click", function (event) {
 
   createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-      // Signed up
+      //данные введены правильно
       const user = userCredential.user;
       localStorage.setItem('uid', user.uid);
       set(ref(db,"users/" + user.uid),{
@@ -45,7 +45,6 @@ submit.addEventListener("click", function (event) {
       })
       //alert("Создание аккаунта...");
       window.location.href = "http://127.0.0.1:8000";
-      // ...
     })
     .catch((error) => {
       const errorCode = error.code;

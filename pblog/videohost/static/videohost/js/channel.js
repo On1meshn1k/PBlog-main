@@ -70,7 +70,7 @@ auth.onAuthStateChanged(function (user) {
         imgElement.src = url;
       })
       .catch((error) => {
-        alert('Ошибка получения URL изображения: ', error);
+        //alert('Ошибка получения URL изображения: ', error);
       });
   }
 }
