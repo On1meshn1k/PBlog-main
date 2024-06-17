@@ -61,7 +61,7 @@ submit.addEventListener("click", function (event) {
       password: password
 
     });
-    alert("Создана БД!")
+    //alert("Создана БД!")
 });
 
 // вход
