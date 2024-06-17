@@ -43,8 +43,8 @@ submit.addEventListener("click", function (event) {
         email: email,
         password: password
       })
-      alert("Создание аккаунта...");
-      window.location.href = "http://127.0.0.1:8000/channel.html";
+      //alert("Создание аккаунта...");
+      window.location.href = "http://127.0.0.1:8000";
       // ...
     })
     .catch((error) => {
