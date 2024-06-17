@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Play video</title>
     <link rel="stylesheet" href="{% static 'videohost/css/style.css' %}" type="text/css">
+
 </head>
 <body>
     
@@ -21,9 +22,11 @@
             </div>
         </div>
         <div class="nav-right flex-div">
+            <img src="{% static 'videohost/images/upload.png' %}" class="upload" id="upload">
+            <span class="username" id="username"></span>
+            <button class="logout" id="logout">Выйти</button>
             <a href="{% url 'enter' %}" class="auth">Войти</a>
-<!--            <img src="{% static 'videohost/images/upload.png' %}">-->
-<!--            <img src="{% static 'videohost/images/Jack.png' %}" class="user-icon">-->
+            <!--            <img src="{% static 'videohost/images/Jack.png' %}" class="user-icon">-->
         </div>
     </nav>
 
@@ -91,6 +94,10 @@
         </div>
     </div>
 
-
+<script type="module" src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js"></script>
+<script type="module" src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js"></script>
+<script type="module" src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js"></script>
+<script type="module" src="{% static 'videohost/js/script.js' %}"></script>
+<script type="module" src="{% static 'videohost/js/channel.js' %}"></script>
 </body>
 </html>
