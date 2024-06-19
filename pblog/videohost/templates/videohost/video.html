@@ -5,9 +5,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'videohost/css/style.css' %}">
-    <script src="{% static 'videohost/js/script.js' %}" defer></script>
-    <title>PBlog</title>
+    <link rel="stylesheet" href="{% static 'videohost/css/video.css' %}">
+    <script src="{% static 'videohost/js/video.js' %}" defer></script>
+    <title>Просмотр видео</title>
 </head>
 
 <body>
@@ -30,39 +30,21 @@
             <a href="enter.html/" class="auth">Войти</a>
         </div>
     </nav>
-    <!-- sidebar -->
-
-    <div class="sidebar">
-        <div class="shortcut-links">
-            <a href=""><img src="{% static 'videohost/images/home_active.png' %}">
-                <p>Главная</p>
-            </a>
-            <a href="{% url 'channel' %}"><img src="{% static 'videohost/images/subscriprion.png' %}">
-                <p>Мой канал</p>
-            </a>
-            <a href=""><img src="{% static 'videohost/images/library.png' %}">
-                <p>Библиотека</p>
-            </a>
-            <hr>
-        </div>
-        <div class="subscribe-list">
-            <h3>Подписки</h3>
-        </div>
-    </div>
-
     <!-- main -->
-
     <div class="container">
-        <div class="list-container" id="videoList">
+        <div id="videoContainer">
+            <video controls id="videoPlayer"></video>
+            <div id="videoInfo">
+                <h2 id="videoTitle"></h2>
+                <p id="videoDescription"></p>
+                <p id="videoUploadDate"></p>
+            </div>
         </div>
     </div>
 
-    <script type="module" src="{% static 'videohost/js/main_script.js' %}"></script>
     <script type="module" src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js"></script>
-    <script type="module" src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js"></script>
     <script type="module" src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js"></script>
-    <script type="module" src="{% static 'videohost/js/load_videos.js' %}"></script>
+    <script type="module" src="{% static 'videohost/js/video_page.js' %}"></script>
 </body>
 
 </html>
-

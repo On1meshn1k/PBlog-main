@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 import { getStorage, ref, getDownloadURL, uploadBytesResumable } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
-import { getDatabase, ref as dbRef, set } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+import { getDatabase, ref as dbRef, set, push } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
 // Initialize Firebase
 // Your web app's Firebase configuration
@@ -27,27 +27,23 @@ function sanitizeFileName(fileName) {
 
 // Function to upload video
 function uploadVideo(file, userId) {
-    const sanitizedFileName = sanitizeFileName(file.name);
+    const sanitizedFileName = file.name.replace(/[.#$[\]]/g, '_');
     const storageRef = ref(storage, `users/${userId}/videos/${sanitizedFileName}`);
     const uploadTask = uploadBytesResumable(storageRef, file);
 
     uploadTask.on('state_changed',
         (snapshot) => {
-            // Track upload progress if needed
             const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
             console.log('Upload is ' + progress + '% done');
         },
         (error) => {
-            // Handle unsuccessful uploads
             console.error('Upload error:', error);
             document.getElementById('uploadMessage').innerText = 'Upload error';
         },
         () => {
-            // Handle successful uploads on complete
             getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                 console.log('File available at', downloadURL);
 
-                // Save video information to the database
                 const videoData = {
                     url: downloadURL,
                     userId: userId,
@@ -55,7 +51,7 @@ function uploadVideo(file, userId) {
                     uploadDate: new Date().toISOString()
                 };
 
-                const newVideoRef = dbRef(database, `videos/${sanitizedFileName}`);
+                const newVideoRef = push(dbRef(database, 'videos'));
                 set(newVideoRef, videoData)
                     .then(() => {
                         console.log('Video saved to database');
