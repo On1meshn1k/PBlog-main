@@ -30,7 +30,7 @@ function loadVideos() {
                 <div class="flex-div">
                     <img src="{% static 'videohost/images/Jack.png' %}">
                     <div class="vid-info">
-                        <a href="video.html?id=${childSnapshot.key}">${video.fileName}</a>
+                        <a href="video.html?id=${childSnapshot.key}">${video.title}</a>
                         <p>Uploaded by User</p>
                         <p>${video.uploadDate}</p>
                     </div>

@@ -20,13 +20,8 @@ const auth = getAuth(app);
 const storage = getStorage(app);
 const database = getDatabase(app);
 
-// Function to sanitize file name
-function sanitizeFileName(fileName) {
-    return fileName.replace(/[.#$[\]]/g, '_');
-}
-
 // Function to upload video
-function uploadVideo(file, userId) {
+function uploadVideo(file, userId, videoTitle) {
     const sanitizedFileName = file.name.replace(/[.#$[\]]/g, '_');
     const storageRef = ref(storage, `users/${userId}/videos/${sanitizedFileName}`);
     const uploadTask = uploadBytesResumable(storageRef, file);
@@ -34,7 +29,7 @@ function uploadVideo(file, userId) {
     uploadTask.on('state_changed',
         (snapshot) => {
             const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            console.log('Upload is ' + progress + '% done');
+            document.getElementById('uploadProgress').value = progress;
         },
         (error) => {
             console.error('Upload error:', error);
@@ -42,12 +37,13 @@ function uploadVideo(file, userId) {
         },
         () => {
             getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                console.log('File available at', downloadURL);
+                document.getElementById('uploadMessage').innerText = 'Upload successful';
 
                 const videoData = {
                     url: downloadURL,
                     userId: userId,
                     fileName: file.name,
+                    title: videoTitle,
                     uploadDate: new Date().toISOString()
                 };
 
@@ -55,11 +51,9 @@ function uploadVideo(file, userId) {
                 set(newVideoRef, videoData)
                     .then(() => {
                         console.log('Video saved to database');
-                        document.getElementById('uploadMessage').innerText = 'Upload successful';
                     })
                     .catch((error) => {
                         console.error('Error saving video to database:', error);
-                        document.getElementById('uploadMessage').innerText = 'Database error';
                     });
             });
         }
@@ -70,15 +64,18 @@ function uploadVideo(file, userId) {
 document.getElementById('uploadButton').addEventListener('click', () => {
     const fileInput = document.getElementById('fileInput');
     const file = fileInput.files[0];
+    const videoTitle = document.getElementById('videoTitleInput').value;
 
     const user = auth.currentUser;
 
-    if (user && file) {
+    if (user && file && videoTitle) {
         const userId = user.uid;
-        uploadVideo(file, userId);
+        uploadVideo(file, userId, videoTitle);
     } else if (!user) {
         alert('Please log in');
-    } else {
+    } else if (!file) {
         alert('Select a video to upload');
+    } else if (!videoTitle) {
+        alert('Enter a title for the video');
     }
 });

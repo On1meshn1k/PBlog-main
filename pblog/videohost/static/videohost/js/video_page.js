@@ -36,7 +36,7 @@ function loadVideo() {
             const videoUploadDate = document.getElementById('videoUploadDate');
 
             videoPlayer.src = video.url;
-            videoTitle.textContent = video.fileName;
+            videoTitle.textContent = video.title;
             videoDescription.textContent = `Uploaded by ${video.userId}`;
             videoUploadDate.textContent = `Uploaded on ${video.uploadDate}`;
         } else {
