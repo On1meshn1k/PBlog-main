@@ -1,5 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getDatabase, ref as dbRef, get } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+import { getStorage } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDfKH9o_5TIursPTAV3kgHRo45Sh6-2T4Y",
@@ -12,39 +14,68 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const database = getDatabase(app);
+const db = getDatabase(app);
+const auth = getAuth(app);
+const storage = getStorage(app);
 
-function getVideoIdFromUrl() {
+const username = document.getElementById('username');
+const upload = document.getElementById('upload');
+const logout = document.getElementById('logout');
+const enter = document.querySelector('.auth');
+
+auth.onAuthStateChanged(function (user) {
+  if (user) {
+    username.style.display = "block"
+    upload.style.display = "block"
+    logout.style.display = "block"
+    enter.style.display = "none"
+    const userId = user.uid;
+    const usernameRef = ref(db, "users/" + userId + "/username");
+
+    get(usernameRef).then((snapshot) => {
+      if (snapshot.exists()) {
+        const usernameValue = snapshot.val();
+        username.innerText = usernameValue;
+        channel_name.innerText = usernameValue;
+      } else {
+        alert('данные об имени пользователя не найдены')
+      }
+    }).catch((error) => {
+      //alert("Ошибка при получении имени пользователя" + error);
+    });
+    };
+ });
+
+function getVideoId() {
     const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get('id');
+    return urlParams.get('videoId');
 }
 
 function loadVideo() {
-    const videoId = getVideoIdFromUrl();
-    if (!videoId) {
-        alert('Video ID not found');
-        return;
+    const videoId = getVideoId();
+    if (videoId) {
+        const videoRef = ref(db, `videos/${videoId}`);
+        get(videoRef).then((snapshot) => {
+            if (snapshot.exists()) {
+                const video = snapshot.val();
+                const videoPlayer = document.getElementById('videoPlayer');
+                const videoTitle = document.getElementById('videoTitle');
+                const videoAuthor = document.getElementById('videoAuthor');
+                const videoUploadDate = document.getElementById('videoUploadDate');
+
+                videoPlayer.src = video.url;
+                videoTitle.innerText = video.title;
+                videoAuthor.innerText = `Автор: ${video.userName}`;
+                videoUploadDate.innerText = `Дата загрузки: ${video.uploadDate}`;
+            } else {
+                console.error('Видео не найдено');
+            }
+        }).catch((error) => {
+            console.error('Ошибка базы данных:', error);
+        });
+    } else {
+        console.error('ID видео не указан');
     }
-
-    const videoRef = dbRef(database, `videos/${videoId}`);
-    get(videoRef).then((snapshot) => {
-        if (snapshot.exists()) {
-            const video = snapshot.val();
-            const videoPlayer = document.getElementById('videoPlayer');
-            const videoTitle = document.getElementById('videoTitle');
-            const videoDescription = document.getElementById('videoDescription');
-            const videoUploadDate = document.getElementById('videoUploadDate');
-
-            videoPlayer.src = video.url;
-            videoTitle.textContent = video.title;
-            videoDescription.textContent = `Uploaded by ${video.userId}`;
-            videoUploadDate.textContent = `Uploaded on ${video.uploadDate}`;
-        } else {
-            alert('Video not found');
-        }
-    }).catch((error) => {
-        console.error('Error fetching video data:', error);
-    });
 }
 
 window.onload = loadVideo;

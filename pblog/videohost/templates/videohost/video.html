@@ -5,8 +5,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'videohost/css/video.css' %}">
-    <script src="{% static 'videohost/js/video.js' %}" defer></script>
+    <link rel="stylesheet" href="{% static 'videohost/css/style.css' %}">
+<!--    <script src="{% static 'videohost/js/video.js' %}" defer></script>-->
     <title>Просмотр видео</title>
 </head>
 
@@ -31,15 +31,11 @@
         </div>
     </nav>
     <!-- main -->
-    <div class="container">
-        <div id="videoContainer">
-            <video controls id="videoPlayer"></video>
-            <div id="videoInfo">
-                <h2 id="videoTitle"></h2>
-                <p id="videoDescription"></p>
-                <p id="videoUploadDate"></p>
-            </div>
-        </div>
+    <div class="video-container">
+        <video id="videoPlayer" controls></video>
+        <h2 id="videoTitle"></h2>
+        <p id="videoAuthor"></p>
+        <p id="videoUploadDate"></p>
     </div>
 
     <script type="module" src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js"></script>

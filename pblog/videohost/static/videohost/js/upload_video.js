@@ -20,11 +20,14 @@ const auth = getAuth(app);
 const storage = getStorage(app);
 const database = getDatabase(app);
 
-// Function to upload video
-function uploadVideo(file, userId, videoTitle) {
+// Function to upload video and thumbnail
+function uploadVideo(file, thumbnailFile, userId, videoTitle) {
     const sanitizedFileName = file.name.replace(/[.#$[\]]/g, '_');
     const storageRef = ref(storage, `users/${userId}/videos/${sanitizedFileName}`);
+    const thumbnailRef = ref(storage, `users/${userId}/thumbnails/${sanitizedFileName}`);
+
     const uploadTask = uploadBytesResumable(storageRef, file);
+    const thumbnailUploadTask = uploadBytesResumable(thumbnailRef, thumbnailFile);
 
     uploadTask.on('state_changed',
         (snapshot) => {
@@ -37,24 +40,29 @@ function uploadVideo(file, userId, videoTitle) {
         },
         () => {
             getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                document.getElementById('uploadMessage').innerText = 'Upload successful';
+                thumbnailUploadTask.on('state_changed', null, null, () => {
+                    getDownloadURL(thumbnailUploadTask.snapshot.ref).then((thumbnailURL) => {
+                        document.getElementById('uploadMessage').innerText = 'Upload successful';
 
-                const videoData = {
-                    url: downloadURL,
-                    userId: userId,
-                    fileName: file.name,
-                    title: videoTitle,
-                    uploadDate: new Date().toISOString()
-                };
+                        const videoData = {
+                            url: downloadURL,
+                            userId: userId,
+                            fileName: file.name,
+                            title: videoTitle,
+                            thumbnailUrl: thumbnailURL,
+                            uploadDate: new Date().toISOString()
+                        };
 
-                const newVideoRef = push(dbRef(database, 'videos'));
-                set(newVideoRef, videoData)
-                    .then(() => {
-                        console.log('Video saved to database');
-                    })
-                    .catch((error) => {
-                        console.error('Error saving video to database:', error);
+                        const newVideoRef = push(dbRef(database, 'videos'));
+                        set(newVideoRef, videoData)
+                            .then(() => {
+                                console.log('Video saved to database');
+                            })
+                            .catch((error) => {
+                                console.error('Error saving video to database:', error);
+                            });
                     });
+                });
             });
         }
     );
@@ -64,18 +72,22 @@ function uploadVideo(file, userId, videoTitle) {
 document.getElementById('uploadButton').addEventListener('click', () => {
     const fileInput = document.getElementById('fileInput');
     const file = fileInput.files[0];
+    const thumbnailInput = document.getElementById('thumbnailInput');
+    const thumbnailFile = thumbnailInput.files[0];
     const videoTitle = document.getElementById('videoTitleInput').value;
 
     const user = auth.currentUser;
 
-    if (user && file && videoTitle) {
+    if (user && file && videoTitle && thumbnailFile) {
         const userId = user.uid;
-        uploadVideo(file, userId, videoTitle);
+        uploadVideo(file, thumbnailFile, userId, videoTitle);
     } else if (!user) {
         alert('Please log in');
     } else if (!file) {
         alert('Select a video to upload');
     } else if (!videoTitle) {
         alert('Enter a title for the video');
+    } else if (!thumbnailFile) {
+        alert('Select a thumbnail for the video');
     }
 });

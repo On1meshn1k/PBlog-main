@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getDatabase, ref as dbRef, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDfKH9o_5TIursPTAV3kgHRo45Sh6-2T4Y",
@@ -14,32 +14,31 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 
-function loadVideos() {
-    const videoListRef = dbRef(database, 'videos');
-    onValue(videoListRef, (snapshot) => {
-        const videoList = document.getElementById('videoList');
-        videoList.innerHTML = '';
+const videoListContainer = document.querySelector('.list-container');
 
+function fetchVideos() {
+    const videosRef = ref(database, 'videos');
+    onValue(videosRef, (snapshot) => {
+        videoListContainer.innerHTML = '';
         snapshot.forEach((childSnapshot) => {
             const video = childSnapshot.val();
-            const videoElement = document.createElement('div');
-            videoElement.classList.add('vid-list');
-
-            videoElement.innerHTML = `
-                <a href="video.html?id=${childSnapshot.key}"><img src="${video.url}" class="thumbnail"></a>
-                <div class="flex-div">
-                    <img src="{% static 'videohost/images/Jack.png' %}">
-                    <div class="vid-info">
-                        <a href="video.html?id=${childSnapshot.key}">${video.title}</a>
-                        <p>Uploaded by User</p>
-                        <p>${video.uploadDate}</p>
+            const videoElement = `
+                <div class="vid-list">
+                    <a href="video.html?videoId=${childSnapshot.key}"><img src="${video.thumbnailUrl}" class="thumbnail"></a>
+                    <div class="flex-div">
+                        <img src="{% static 'videohost/images/Jack.png' %}">
+                        <div class="vid-info">
+                            <a href="video.html?videoId=${childSnapshot.key}">${video.title}</a>
+                            <p>Автор: ${video.userId}</p>
+                            <p>${video.uploadDate}</p>
+                        </div>
                     </div>
                 </div>
             `;
-
-            videoList.appendChild(videoElement);
+            videoListContainer.innerHTML += videoElement;
         });
     });
 }
 
-window.onload = loadVideos;
+
+fetchVideos();
