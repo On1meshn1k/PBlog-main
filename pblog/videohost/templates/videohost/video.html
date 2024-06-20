@@ -14,7 +14,6 @@
 
     <nav class="flex-div">
         <div class="nav-left flex-div">
-            <img src="{% static 'videohost/images/menu.png' %}" class="menu-icon">
             <a href="{% url 'home' %}"><img src="{% static 'videohost/images/logo.png' %}" class="logo"></a>
         </div>
         <div class="nav-middle flex-div">
@@ -30,14 +29,29 @@
             <a href="enter.html/" class="auth">Войти</a>
         </div>
     </nav>
+
+
     <!-- main -->
-    <div class="video-container">
-        <video id="videoPlayer" controls></video>
-        <h2 id="videoTitle"></h2>
-        <p id="videoAuthor"></p>
-        <p id="videoUploadDate"></p>
+   <div class="main-container">
+        <div class="video-section">
+            <div class="video-wrapper">
+                <video id="videoPlayer" controls>
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+            <div class="video-details">
+                <h1 id="videoTitle"></h1>
+                <p id="videoUploader"></p>
+                <img id="videoUploaderAvatar" class="avatar">
+            </div>
+        </div>
+        <div class="videobar">
+            <h3>Другие видео</h3>
+            <div id="videoList"></div>
+        </div>
     </div>
 
+    <script type="module" src="{% static 'videohost/js/main_script.js' %}"></script>
     <script type="module" src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js"></script>
     <script type="module" src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js"></script>
     <script type="module" src="{% static 'videohost/js/video_page.js' %}"></script>
