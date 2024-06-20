@@ -203,6 +203,7 @@ nav {
 
 .vid-list .thumbnail {
     width: 100%;
+    height: 70%;
     border-radius: 5px;
 }
 
@@ -537,3 +538,6 @@ nav {
 .container hr {
     width: 100%;
 }
+
+/* отображение видео */
+
