@@ -18,7 +18,7 @@ const videoListContainer = document.querySelector('.list-container');
 
 function fetchVideos() {
     const videosRef = ref(database, 'videos');
-    
+    const userRef = ref(database, 'users');
     onValue(videosRef, (snapshot) => {
         videoListContainer.innerHTML = '';
         snapshot.forEach((childSnapshot) => {
@@ -27,7 +27,6 @@ function fetchVideos() {
                 <div class="vid-list">
                     <a href="video.html?videoId=${childSnapshot.key}"><img src="${video.thumbnailUrl}" class="thumbnail"></a>
                     <div class="flex-div">
-                        <img src="">
                         <div class="vid-info">
                             <a href="video.html?videoId=${childSnapshot.key}">${video.title}</a>
                             <p>Автор: ${video.userId}</p>
