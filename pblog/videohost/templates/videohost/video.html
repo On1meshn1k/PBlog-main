@@ -6,7 +6,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'videohost/css/style.css' %}">
-<!--    <script src="{% static 'videohost/js/video.js' %}" defer></script>-->
+    <link rel="stylesheet" href="{% static 'videohost/css/video_page.css' %}">
+    <!--    <script src="{% static 'videohost/js/video.js' %}" defer></script>-->
     <title>Просмотр видео</title>
 </head>
 
@@ -42,7 +43,17 @@
             <div class="video-details">
                 <h1 id="videoTitle"></h1>
                 <p id="videoUploader"></p>
+                <button id="likeButton">👍</button>
+                <span id="likesCount">0</span> лайков
                 <img id="videoUploaderAvatar" class="avatar">
+            </div>
+            <div class="comments-section">
+                <h3>Комментарии</h3>
+                <form id="commentForm">
+                    <input type="text" id="commentInput" placeholder="Добавить комментарий" required>
+                    <button type="submit">Отправить</button>
+                </form>
+                <div id="commentsContainer"></div>
             </div>
         </div>
         <div class="videobar">

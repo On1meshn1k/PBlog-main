@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { getDatabase, ref, set, get, push, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 import { getStorage } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
 
 const firebaseConfig = {
@@ -23,28 +23,32 @@ const upload = document.getElementById('upload');
 const logout = document.getElementById('logout');
 const enter = document.querySelector('.auth');
 
-auth.onAuthStateChanged(function (user) {
-  if (user) {
-    username.style.display = "block"
-    upload.style.display = "block"
-    logout.style.display = "block"
-    enter.style.display = "none"
-    const userId = user.uid;
-    const usernameRef = ref(db, "users/" + userId + "/username");
+onAuthStateChanged(auth, function (user) {
+    if (user) {
+        username.style.display = "block";
+        upload.style.display = "block";
+        logout.style.display = "block";
+        enter.style.display = "none";
+        const userId = user.uid;
+        const usernameRef = ref(db, "users/" + userId + "/username");
 
-    get(usernameRef).then((snapshot) => {
-      if (snapshot.exists()) {
-        const usernameValue = snapshot.val();
-        username.innerText = usernameValue;
-        channel_name.innerText = usernameValue;
-      } else {
-        alert('данные об имени пользователя не найдены')
-      }
-    }).catch((error) => {
-      //alert("Ошибка при получении имени пользователя" + error);
-    });
-    };
- });
+        get(usernameRef).then((snapshot) => {
+            if (snapshot.exists()) {
+                const usernameValue = snapshot.val();
+                username.innerText = usernameValue;
+            } else {
+                alert('Данные об имени пользователя не найдены');
+            }
+        }).catch((error) => {
+            alert("Ошибка при получении имени пользователя: " + error);
+        });
+    } else {
+        username.style.display = "none";
+        upload.style.display = "none";
+        logout.style.display = "none";
+        enter.style.display = "block";
+    }
+});
 
 function getVideoId() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -60,13 +64,14 @@ function loadVideo() {
                 const video = snapshot.val();
                 const videoPlayer = document.getElementById('videoPlayer');
                 const videoTitle = document.getElementById('videoTitle');
-                const videoAuthor = document.getElementById('videoAuthor');
-                const videoUploadDate = document.getElementById('videoUploadDate');
+                const videoUploader = document.getElementById('videoUploader');
 
                 videoPlayer.src = video.url;
                 videoTitle.innerText = video.title;
-                videoAuthor.innerText = `Автор: ${video.userName}`;
-                videoUploadDate.innerText = `Дата загрузки: ${video.uploadDate}`;
+                videoUploader.innerText = `Автор: ${video.username}`;
+
+                loadLikes(videoId);
+                loadComments(videoId);
             } else {
                 console.error('Видео не найдено');
             }
@@ -77,5 +82,76 @@ function loadVideo() {
         console.error('ID видео не указан');
     }
 }
+
+function loadLikes(videoId) {
+    const likesRef = ref(db, `likes/${videoId}`);
+    onValue(likesRef, (snapshot) => {
+        const likesCount = snapshot.size;
+        document.getElementById('likesCount').innerText = likesCount;
+    });
+}
+
+function toggleLike(videoId, userId) {
+    const likeRef = ref(db, `likes/${videoId}/${userId}`);
+    get(likeRef).then((snapshot) => {
+        if (snapshot.exists()) {
+            // If already liked, remove the like
+            set(likeRef, null);
+        } else {
+            // If not liked yet, add the like
+            set(likeRef, true);
+        }
+    });
+}
+
+document.getElementById('likeButton').addEventListener('click', () => {
+    const videoId = getVideoId();
+    const user = auth.currentUser;
+    if (user) {
+        toggleLike(videoId, user.uid);
+    } else {
+        alert('Вы должны быть авторизованы, чтобы ставить лайки');
+    }
+});
+
+function loadComments(videoId) {
+    const commentsRef = ref(db, `comments/${videoId}`);
+    const commentsContainer = document.getElementById('commentsContainer');
+    onValue(commentsRef, (snapshot) => {
+        commentsContainer.innerHTML = '';
+        snapshot.forEach((childSnapshot) => {
+            const comment = childSnapshot.val();
+            const commentElement = document.createElement('div');
+            commentElement.className = 'comment';
+            commentElement.innerText = `${comment.username}: ${comment.text}`;
+            commentsContainer.appendChild(commentElement);
+        });
+    });
+}
+
+document.getElementById('commentForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const videoId = getVideoId();
+    const user = auth.currentUser;
+    if (user) {
+        const commentInput = document.getElementById('commentInput');
+        const commentText = commentInput.value;
+        if (commentText) {
+            const newCommentRef = push(ref(db, `comments/${videoId}`));
+            set(newCommentRef, {
+                text: commentText,
+                username: username.innerText,
+                userId: user.uid,
+                timestamp: Date.now()
+            }).then(() => {
+                commentInput.value = '';
+            }).catch((error) => {
+                console.error('Ошибка при добавлении комментария:', error);
+            });
+        }
+    } else {
+        alert('Вы должны быть авторизованы, чтобы оставлять комментарии');
+    }
+});
 
 window.onload = loadVideo;

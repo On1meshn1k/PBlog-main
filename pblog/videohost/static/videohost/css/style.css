@@ -202,8 +202,8 @@ nav {
 }
 
 .vid-list .thumbnail {
-    width: 100%;
-    height: 70%;
+    width: 240px;
+    height: 180px;
     border-radius: 5px;
 }
 
@@ -301,7 +301,7 @@ video {
 }
 
 .video-details {
-    margin-top: 20px;
+    margin-top: 0px;
 }
 
 .video-details h1 {
@@ -349,6 +349,8 @@ video {
 .videobar .video-item p {
     margin: 0;
 }
+
+
 
 .row {
     display: flex;
@@ -614,5 +616,7 @@ video {
     width: 100%;
 }
 
-/* отображение видео */
+
+
+
 

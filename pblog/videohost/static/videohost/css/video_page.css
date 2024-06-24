@@ -1,0 +1,40 @@
+/*пу-пу-пу*/
+
+.video-wrapper video {
+    width: 100%;
+    height: auto;
+}
+
+.comments-section {
+    margin-top: 20px;
+}
+
+#commentForm {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+#commentInput {
+    flex-grow: 1;
+    padding: 10px;
+}
+
+#commentsContainer {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.comment {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+#likeButton {
+    cursor: pointer;
+    padding: 10px;
+    margin-top: 10px;
+    background: none;
+    border: none;
+    font-size: 20px;
+}
