@@ -21,7 +21,6 @@ const storage = getStorage(app);
 const username = document.getElementById('username');
 const upload = document.getElementById('upload');
 const logout = document.getElementById('logout');
-const enter = document.querySelector('.auth');
 
 onAuthStateChanged(auth, function (user) {
     if (user) {
@@ -188,3 +187,9 @@ window.onload = () => {
     loadVideo();
     loadOtherVideos();
 };
+
+const enter = document.querySelector('.auth');
+
+enter.addEventListener('click', function() {
+    window.location.href = "http://127.0.0.1:8000/enter.html"
+})

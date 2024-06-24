@@ -91,3 +91,9 @@ document.getElementById('uploadButton').addEventListener('click', () => {
         alert('Выберите обложку для видео');
     }
 });
+
+const back = document.getElementById('previous_page');
+
+back.addEventListener('click', function () {
+  window.location.href = 'http://127.0.0.1:8000';
+})
