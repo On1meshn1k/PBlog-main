@@ -7,7 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'videohost/css/style.css' %}">
     <link rel="stylesheet" href="{% static 'videohost/css/video_page.css' %}">
-    <!--    <script src="{% static 'videohost/js/video.js' %}" defer></script>-->
     <title>Просмотр видео</title>
 </head>
 
@@ -37,7 +36,7 @@
         <div class="video-section">
             <div class="video-wrapper">
                 <video id="videoPlayer" controls>
-                    Your browser does not support the video tag.
+                    Ваш браузер не поддерживает данный тип видео
                 </video>
             </div>
             <div class="video-details">
@@ -45,7 +44,6 @@
                 <p id="videoUploader"></p>
                 <button id="likeButton">👍</button>
                 <span id="likesCount">0</span> лайков
-                <img id="videoUploaderAvatar" class="avatar">
             </div>
             <div class="comments-section">
                 <h3>Комментарии</h3>

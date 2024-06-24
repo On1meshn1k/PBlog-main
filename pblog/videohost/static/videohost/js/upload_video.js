@@ -42,7 +42,7 @@ function uploadVideo(file, thumbnailFile, userId, videoTitle) {
             getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                 thumbnailUploadTask.on('state_changed', null, null, () => {
                     getDownloadURL(thumbnailUploadTask.snapshot.ref).then((thumbnailURL) => {
-                        document.getElementById('uploadMessage').innerText = 'Upload successful';
+                        document.getElementById('uploadMessage').innerText = 'Загрузка прошла успешно!';
 
                         const videoData = {
                             url: downloadURL,
@@ -82,12 +82,12 @@ document.getElementById('uploadButton').addEventListener('click', () => {
         const userId = user.uid;
         uploadVideo(file, thumbnailFile, userId, videoTitle);
     } else if (!user) {
-        alert('Please log in');
+        alert('Пожалуйста войдите в систему');
     } else if (!file) {
-        alert('Select a video to upload');
+        alert('Выберите видео для загрузки');
     } else if (!videoTitle) {
-        alert('Enter a title for the video');
+        alert('Введите название видео');
     } else if (!thumbnailFile) {
-        alert('Select a thumbnail for the video');
+        alert('Выберите обложку для видео');
     }
 });

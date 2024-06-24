@@ -43,7 +43,7 @@ submit.addEventListener("click", function (event) {
         email: email,
         password: password
       })
-      //alert("Создание аккаунта...");
+      alert("Регистрация прошла успешно!");
       window.location.href = "http://127.0.0.1:8000";
     })
     .catch((error) => {

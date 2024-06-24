@@ -68,7 +68,8 @@ function loadVideo() {
 
                 videoPlayer.src = video.url;
                 videoTitle.innerText = video.title;
-                videoUploader.innerText = `Автор: ${video.username}`;
+                videoUploader.innerText = `Автор: ${video.userId}`;
+
 
                 loadLikes(videoId);
                 loadComments(videoId);
@@ -95,10 +96,10 @@ function toggleLike(videoId, userId) {
     const likeRef = ref(db, `likes/${videoId}/${userId}`);
     get(likeRef).then((snapshot) => {
         if (snapshot.exists()) {
-            // If already liked, remove the like
+            // Если уже лайк был, то убрать его
             set(likeRef, null);
         } else {
-            // If not liked yet, add the like
+            // Если не было лайка, то добавить
             set(likeRef, true);
         }
     });
@@ -154,4 +155,36 @@ document.getElementById('commentForm').addEventListener('submit', (e) => {
     }
 });
 
-window.onload = loadVideo;
+function loadOtherVideos() {
+  const videosRef = ref(db, 'videos');
+  const videoListContainer = document.getElementById('videoList');
+
+  get(videosRef).then((snapshot) => {
+    videoListContainer.innerHTML = '';
+    snapshot.forEach((childSnapshot) => {
+      const video = childSnapshot.val();
+      const videoElement = `
+        <div class="vid-list">
+          <a href="?videoId=${childSnapshot.key}">
+            <img src="${video.thumbnailUrl}" class="thumbnail">
+          </a>
+          <div class="flex-div">
+            <div class="vid-info">
+              <a href="?videoId=${childSnapshot.key}">${video.title}</a>
+              <p>Автор: ${video.userId}</p>
+              <p>${video.uploadDate}</p>
+            </div>
+          </div>
+        </div>
+      `;
+      videoListContainer.innerHTML += videoElement;
+    });
+  }).catch((error) => {
+    console.error('Ошибка загрузки других видео:', error);
+  });
+}
+
+window.onload = () => {
+    loadVideo();
+    loadOtherVideos();
+};
