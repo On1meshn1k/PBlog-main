@@ -86,11 +86,11 @@ function loadUserVideos(userId) {
       if (video.userId === userId) {
         const videoElement = `
           <div class="vid-item">
-            <a href="videoId=${childSnapshot.key}">
+            <a href="video.html?videoId=${childSnapshot.key}">
               <img src="${video.thumbnailUrl}" class="thumbnail">
             </a>
             <div class="vid-info">
-              <a href="videoId=${childSnapshot.key}">${video.title}</a>
+              <a href="video.html?videoId=${childSnapshot.key}">${video.title}</a>
               <p>${video.uploadDate}</p>
             </div>
           </div>

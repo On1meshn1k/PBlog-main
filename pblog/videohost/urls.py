@@ -8,5 +8,5 @@ urlpatterns = [
     path('video.html/', views.Video, name='video'),
     path('channel.html/', views.channel, name='channel'),
     path('edit-profile.html/', views.editProfile, name="editProfile"),
-    path('upload_video.html/', views.upload_video, name="uploadVideo")
+    path('upload_video.html/', views.upload_video, name="uploadVideo"),
 ]
