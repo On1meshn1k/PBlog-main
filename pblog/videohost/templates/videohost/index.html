@@ -46,46 +46,23 @@
             <hr>
         </div>
         <div class="subscribe-list">
-        <h3>Подписки</h3>
-<!--        <a href=""><img src="{% static 'videohost/images/Jack.png' %}">-->
-<!--            <p>Jack Nicholson</p>-->
-<!--        </a>-->
+            <h3>Подписки</h3>
         </div>
     </div>
 
-<!-- main -->
+    <!-- main -->
 
-<div class="container">
-    <div class="list-container">
-        <div class="vid-list">
-            <a href="Video.html/"><img src="{% static 'videohost/images/thumbnail1.png' %}" class="thumbnail"></a>
-            <div class="flex-div">
-                <img src="{% static 'videohost/images/Jack.png' %}">
-                <div class="vid-info">
-                    <a href="Video.html/">Best channel to learn</a>
-                    <p>Easy Tutorials</p>
-                    <p>15k Просмотров &bull; 2 дня назад</p>
-                </div>
-            </div>
-        </div>
-        <div class="vid-list">
-            <a href="{% url 'video' %}"><img src="{% static 'videohost/images/thumbnail1.png' %}" class="thumbnail"></a>
-            <div class="flex-div">
-                <img src="{% static 'videohost/images/Jack.png' %}">
-                <div class="vid-info">
-                    <a href="Video.html/">Best channel to learn</a>
-                    <p>Easy Tutorials</p>
-                    <p>15k Просмотров &bull; 2 дня назад</p>
-                </div>
-            </div>
+    <div class="container">
+        <div class="list-container" id="videoList">
         </div>
     </div>
-</div>
 
-<script type="module" src="{% static 'videohost/js/main_script.js' %}"></script>
-<script type="module" src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js"></script>
-<script type="module" src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js"></script>
-<script type="module" src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js"></script>
+    <script type="module" src="{% static 'videohost/js/main_script.js' %}"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js"></script>
+    <script type="module" src="{% static 'videohost/js/load_videos.js' %}"></script>
 </body>
 
 </html>
+

@@ -17,7 +17,7 @@ const firebaseConfig = {
   databaseURL: "https://pblog-8e245-default-rtdb.europe-west1.firebasedatabase.app/",
 };
 
-// Initialize Firebase
+// Инициализация Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
@@ -28,24 +28,23 @@ document.getElementById('change-logo').addEventListener("click", function () {
   if (user) {
     window.location.href = "http://127.0.0.1:8000/edit-profile.html";
   } else {
-    alert('Пользователь не авторизирован')
+    alert('Пользователь не авторизирован');
   }
 });
-
-const user = auth.currentUser;
 
 const username = document.getElementById('username');
 const upload = document.getElementById('upload');
 const logout = document.getElementById('logout');
 const enter = document.querySelector('.auth');
 const channel_name = document.querySelector('.channel-name');
+const videoListContainer = document.querySelector('.vid-list');
 
 auth.onAuthStateChanged(function (user) {
   if (user) {
-    username.style.display = "block"
-    upload.style.display = "block"
-    logout.style.display = "block"
-    enter.style.display = "none"
+    username.style.display = "block";
+    upload.style.display = "block";
+    logout.style.display = "block";
+    enter.style.display = "none";
     const userId = user.uid;
     const usernameRef = ref(db, "users/" + userId + "/username");
 
@@ -55,12 +54,11 @@ auth.onAuthStateChanged(function (user) {
         username.innerText = usernameValue;
         channel_name.innerText = usernameValue;
       } else {
-        alert('данные об имени пользователя не найдены')
+        alert('данные об имени пользователя не найдены');
       }
     }).catch((error) => {
-      alert("Ошибка при получении имени пользователя" + error);
-      // })
-    })
+      alert("Ошибка при получении имени пользователя: " + error);
+    });
 
     const avatarStorageRef = storageRef(storage, `avatars/${userId}/avatar.jpg`);
 
@@ -70,23 +68,49 @@ auth.onAuthStateChanged(function (user) {
         imgElement.src = url;
       })
       .catch((error) => {
-        //alert('Ошибка получения URL изображения: ', error);
+        // alert('Ошибка получения URL изображения: ', error);
       });
+
+    // Загрузка видео пользователя
+    loadUserVideos(userId);
   }
+});
+
+// Функция для загрузки видео пользователя
+function loadUserVideos(userId) {
+  const userVideosRef = ref(db, `videos`);
+  get(userVideosRef).then((snapshot) => {
+    videoListContainer.innerHTML = '';
+    snapshot.forEach((childSnapshot) => {
+      const video = childSnapshot.val();
+      if (video.userId === userId) {
+        const videoElement = `
+          <div class="vid-item">
+              <img src="${video.thumbnailUrl}" class="thumbnail">
+            <div class="vid-info">
+              <span class="vid-title">${video.title}</span>
+              <p>Просмотры: ${video.views}</p>
+              <p>${video.uploadDate}</p>
+            </div>
+          </div>
+        `;
+        videoListContainer.innerHTML += videoElement;
+      }
+    });
+  }).catch((error) => {
+    console.error('Ошибка загрузки видео пользователя:', error);
+  });
 }
-);
 
 // Выход из аккаунта
-
 logout.addEventListener('click', function () {
   auth.signOut().then(function () {
     alert('Вы вышли из аккаунта');
-
-    username.style.display = "none"
-    upload.style.display = "none"
-    logout.style.display = "none"
-    enter.style.display = "block"
+    username.style.display = "none";
+    upload.style.display = "none";
+    logout.style.display = "none";
+    enter.style.display = "block";
   }).catch(function (error) {
-    alert.error('Ошибка при выходе из аккаунта', error);
+    alert('Ошибка при выходе из аккаунта: ' + error);
   });
-});
+})

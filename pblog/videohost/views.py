@@ -9,7 +9,7 @@ def enter(request):
     return render(request, 'videohost/enter.html')
 
 def Video(request):
-    return render(request, 'videohost/Video.html')
+    return render(request, 'videohost/video.html')
 
 def channel(request):
     return render(request, 'videohost/channel.html')
