@@ -5,3 +5,11 @@
 .shortcut-links .my_channel {
     color: rgb(43, 188, 255);
 }
+
+img {
+    cursor: auto;
+}
+
+.vid-title{
+    font-weight: 600;
+}
