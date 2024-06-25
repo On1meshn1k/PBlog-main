@@ -70,6 +70,9 @@ function loadVideo() {
                 videoUploader.innerText = `Автор: ${video.userId}`;
 
 
+                const viewsRef = ref(db, `videos/${videoId}/views`);
+                set(viewsRef, (video.views || 0) + 1);
+
                 loadLikes(videoId);
                 loadComments(videoId);
             } else {

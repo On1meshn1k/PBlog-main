@@ -89,6 +89,7 @@ function loadUserVideos(userId) {
               <img src="${video.thumbnailUrl}" class="thumbnail">
             <div class="vid-info">
               <span class="vid-title">${video.title}</span>
+              <p>Просмотры: ${video.views}</p>
               <p>${video.uploadDate}</p>
             </div>
           </div>

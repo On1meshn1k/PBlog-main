@@ -2,7 +2,7 @@
 
 .video-wrapper video {
     width: 100%;
-    height: auto;
+    height: 720px;
 }
 
 .comments-section {

@@ -20,37 +20,38 @@ const auth = getAuth(app);
 const storage = getStorage(app);
 const database = getDatabase(app);
 
-// Function to upload video and thumbnail
+// функция загрузки видео
 function uploadVideo(file, thumbnailFile, userId, videoTitle) {
     const sanitizedFileName = file.name.replace(/[.#$[\]]/g, '_');
-    const storageRef = ref(storage, `users/${userId}/videos/${sanitizedFileName}`);
+    const storageRef = ref(storage, `users/${userId}/videos/${sanitizedFileName}`); // доступ к бд
     const thumbnailRef = ref(storage, `users/${userId}/thumbnails/${sanitizedFileName}`);
 
     const uploadTask = uploadBytesResumable(storageRef, file);
     const thumbnailUploadTask = uploadBytesResumable(thumbnailRef, thumbnailFile);
 
-    uploadTask.on('state_changed',
+    uploadTask.on('state_changed', // Прогресс бар
         (snapshot) => {
             const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
             document.getElementById('uploadProgress').value = progress;
         },
-        (error) => {
+        (error) => { // Обработка ошибок
             console.error('Upload error:', error);
             document.getElementById('uploadMessage').innerText = 'Upload error';
         },
         () => {
-            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => { // Получение url видео
                 thumbnailUploadTask.on('state_changed', null, null, () => {
                     getDownloadURL(thumbnailUploadTask.snapshot.ref).then((thumbnailURL) => {
                         document.getElementById('uploadMessage').innerText = 'Загрузка прошла успешно!';
 
-                        const videoData = {
+                        const videoData = {  // добавление в бд
                             url: downloadURL,
                             userId: userId,
                             fileName: file.name,
                             title: videoTitle,
                             thumbnailUrl: thumbnailURL,
-                            uploadDate: new Date().toISOString()
+                            uploadDate: new Date().toISOString(),
+                            views: 0
                         };
 
                         const newVideoRef = push(dbRef(database, 'videos'));
